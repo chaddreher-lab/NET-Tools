@@ -13,6 +13,7 @@ def main():
     # List of secrets to check
     secrets_to_check = [
         "PASTEBIN_API",  # Add more secrets as needed
+        "TEST",
     ]
     
     for secret in secrets_to_check:
