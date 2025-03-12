@@ -1,7 +1,8 @@
 import requests
+import os
 
-# Pastebin API key (Get it from https://pastebin.com/api)
-PASTEBIN_API_KEY = ${{ secrets.PASTEBIN_API}}
+# Load Pastebin API key from environment variables
+PASTEBIN_API_KEY = os.getenv("PASTEBIN_API")
 
 # Convert Google Sheet link to CSV format
 def get_csv_url(sheet_url):
