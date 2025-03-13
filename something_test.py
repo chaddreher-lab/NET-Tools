@@ -7,9 +7,9 @@ sys.stdin.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
 # Define directories to scan
-GITHUB_DIR = os.path.abspath(os.path.expanduser("~/NET-Tools"))  # Adjust if needed
-TEST_DIR = os.path.join(GITHUB_DIR, "test")  # Add test directory explicitly
-RUNNER_DIR = "/home/runner/work/NET-Tools/NET-Tools"  # Explicitly include this directory
+GITHUB_DIR = os.path.realpath(os.path.expanduser("~/NET-Tools"))
+TEST_DIR = os.path.join(GITHUB_DIR, "test")
+RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools")  # Ensure it's absolute
 
 # Scripts to exclude
 EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
@@ -19,30 +19,30 @@ def test_find_python_scripts(*directories):
     python_files = []
     
     for directory in directories:
-        abs_directory = os.path.abspath(directory)
-        print(f"🔍 Searching in: {abs_directory}")  # Debugging output
-        
+        abs_directory = os.path.realpath(directory)  # Force absolute path
+        print(f"🔍 Searching in: {abs_directory}")
+
         if not os.path.isdir(abs_directory):
-            print(f"⚠️ Skipping non-existent directory: {abs_directory}")
+            print(f"⚠️ Directory does not exist: {abs_directory}")
             continue
-        
+
         for root, _, files in os.walk(abs_directory):
-            print(f"📁 Checking inside: {root}")  # Debugging output
+            print(f"📁 Inside: {root}")  # Debugging output
             for file in files:
+                script_path = os.path.join(root, file)
                 if file.endswith(".py"):
-                    script_path = os.path.join(root, file)
                     print(f"  ➜ Found: {script_path}")  # Debugging output
                     if file not in EXCLUDED_SCRIPTS:
                         python_files.append(script_path)
                     else:
-                        print(f"  🚫 Excluded: {script_path}")  # Debugging output
+                        print(f"  🚫 Excluded: {script_path}")
     
     print(f"📂 Total Python scripts found: {len(python_files)}")
     return python_files
 
 def test_check_script_execution(script_path):
     """Attempts to execute a Python script and reports success or failure."""
-    print(f"🚀 Running: {script_path}")  # Debugging output
+    print(f"🚀 Running: {script_path}")
     try:
         result = subprocess.run(
             ["python", script_path], capture_output=True, text=True, timeout=30, encoding="utf-8"
