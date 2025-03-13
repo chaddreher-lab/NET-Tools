@@ -27,16 +27,22 @@ def test_find_python_scripts(*directories):
             continue
         
         for root, _, files in os.walk(abs_directory):
+            print(f"📁 Checking inside: {root}")  # Debugging output
             for file in files:
-                if file.endswith(".py") and file not in EXCLUDED_SCRIPTS:
+                if file.endswith(".py"):
                     script_path = os.path.join(root, file)
-                    python_files.append(script_path)
+                    print(f"  ➜ Found: {script_path}")  # Debugging output
+                    if file not in EXCLUDED_SCRIPTS:
+                        python_files.append(script_path)
+                    else:
+                        print(f"  🚫 Excluded: {script_path}")  # Debugging output
     
-    print(f"📂 Found {len(python_files)} Python scripts.")
+    print(f"📂 Total Python scripts found: {len(python_files)}")
     return python_files
 
 def test_check_script_execution(script_path):
     """Attempts to execute a Python script and reports success or failure."""
+    print(f"🚀 Running: {script_path}")  # Debugging output
     try:
         result = subprocess.run(
             ["python", script_path], capture_output=True, text=True, timeout=30, encoding="utf-8"
@@ -53,7 +59,7 @@ def main():
     scripts = test_find_python_scripts(GITHUB_DIR, TEST_DIR, RUNNER_DIR)
 
     if not scripts:
-        print(f"No Python scripts found in {GITHUB_DIR}, {TEST_DIR}, or {RUNNER_DIR}.")
+        print(f"❌ No Python scripts found in {GITHUB_DIR}, {TEST_DIR}, or {RUNNER_DIR}.")
         return
 
     print(f"🚀 Running checks on {len(scripts)} scripts...\n")
