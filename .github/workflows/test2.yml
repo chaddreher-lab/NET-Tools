@@ -44,6 +44,21 @@ jobs:
       - name: Ensure Python Files Are Readable
         run: chmod -R +r .
 
+      - name: Create conftest.py for missing fixtures
+        run: |
+          cat << 'EOF' > conftest.py
+          import os
+          import pytest
+
+          @pytest.fixture
+          def directory():
+              return os.getcwd()
+
+          @pytest.fixture
+          def script_path():
+              return os.path.join(os.getcwd(), "something_test.py")
+          EOF
+
       - name: Debug Python File Detection
         run: |
           echo "Listing all Python files:"
