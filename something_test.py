@@ -78,5 +78,14 @@ def main():
     for script in scripts:
         test_check_script_execution(script)
 
+    # Add debugging for pytest test discovery
+    print(f"\n🔍 Discovering pytest tests in the test directory: {TEST_DIR}")
+    pytest_args = [TEST_DIR]
+    
+    # Run pytest discovery with verbose output to show why no tests are found
+    result = subprocess.run(["pytest", *pytest_args, "--maxfail=5", "--disable-warnings", "-v"], capture_output=True, text=True)
+    print(f"📜 Pytest discovery output:\n{result.stdout}")
+    print(f"📜 Pytest discovery errors:\n{result.stderr}")
+
 if __name__ == "__main__":
     main()
