@@ -7,17 +7,20 @@ sys.stderr.reconfigure(encoding='utf-8')
 
 # Set this to your main GitHub working branch directory
 GITHUB_DIR = os.path.expanduser("~/")  
+TEST_DIR = os.path.join(GITHUB_DIR, "test")  # Add the test directory
 
 # Scripts to exclude
 EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
 
-def test_find_python_scripts(directory):
-    """Recursively finds all Python scripts in the given directory."""
+def test_find_python_scripts(*directories):
+    """Recursively finds all Python scripts in the given directories."""
     python_files = []
-    for root, _, files in os.walk(directory):
-        for file in files:
-            if file.endswith(".py") and file not in EXCLUDED_SCRIPTS:
-                python_files.append(os.path.join(root, file))
+    for directory in directories:
+        if os.path.exists(directory):
+            for root, _, files in os.walk(directory):
+                for file in files:
+                    if file.endswith(".py") and file not in EXCLUDED_SCRIPTS:
+                        python_files.append(os.path.join(root, file))
     return python_files
 
 def test_check_script_execution(script_path):
@@ -34,13 +37,13 @@ def test_check_script_execution(script_path):
         print(f"⚠️ EXCEPTION: {script_path} - {e}")
 
 def main():
-    scripts = test_find_python_scripts(GITHUB_DIR)
+    scripts = test_find_python_scripts(GITHUB_DIR, TEST_DIR)  # Now checking both directories
 
     if not scripts:
-        print(f"No Python scripts found in {GITHUB_DIR}.")
+        print(f"No Python scripts found in {GITHUB_DIR} or {TEST_DIR}.")
         return
 
-    print(f"Found {len(scripts)} Python scripts in {GITHUB_DIR}. Running checks...\n")
+    print(f"Found {len(scripts)} Python scripts. Running checks...\n")
     for script in scripts:
         test_check_script_execution(script)
 
