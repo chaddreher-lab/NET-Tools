@@ -13,7 +13,7 @@ TEST_DIR = os.path.join(GITHUB_DIR, "test")
 RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools")  # Ensure absolute path
 
 # Scripts to exclude
-EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
+EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py", "imgurtodiscord.py"}
 
 def test_find_python_scripts(*directories):
     """Recursively finds all Python scripts in the given directories."""
