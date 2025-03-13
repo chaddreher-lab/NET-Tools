@@ -36,6 +36,11 @@ jobs:
           find . -name "*.py" -print0 | xargs -0 flake8 --count --select=E9,F63,F7,F82 --show-source --statistics || true
           find . -name "*.py" -print0 | xargs -0 flake8 --count --max-complexity=10 --max-line-length=88 --statistics || true
 
+      - name: Fix Xauthority Issue
+        run: |
+          sudo touch /home/runner/.Xauthority
+          sudo chown $USER:$USER /home/runner/.Xauthority
+
       - name: Run Pytest (Testing) on all Python files
         env:
           PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
