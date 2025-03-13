@@ -2,14 +2,14 @@ import os
 import subprocess
 import sys
 
-sys.stdout.reconfigure(encoding='utf-8')
-sys.stdin.reconfigure(encoding='utf-8')
-sys.stderr.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding="utf-8")
+sys.stdin.reconfigure(encoding="utf-8")
+sys.stderr.reconfigure(encoding="utf-8")
 
 # Define directories to scan
 GITHUB_DIR = os.path.realpath(os.path.expanduser("~/NET-Tools"))
 TEST_DIR = os.path.join(GITHUB_DIR, "test")
-RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools")  # Ensure it's absolute
+RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools")  # Ensure absolute path
 
 # Scripts to exclude
 EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
@@ -17,26 +17,26 @@ EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py"
 def test_find_python_scripts(*directories):
     """Recursively finds all Python scripts in the given directories."""
     python_files = []
-    
+
     for directory in directories:
-        abs_directory = os.path.realpath(directory)  # Force absolute path
+        abs_directory = os.path.realpath(directory)  # Ensure absolute path
         print(f"🔍 Searching in: {abs_directory}")
 
         if not os.path.isdir(abs_directory):
-            print(f"⚠️ Directory does not exist: {abs_directory}")
+            print(f"❌ ERROR: Directory does not exist: {abs_directory}")
             continue
 
         for root, _, files in os.walk(abs_directory):
-            print(f"📁 Inside: {root}")  # Debugging output
+            print(f"📂 Inside: {root}")  # Debugging output
             for file in files:
-                script_path = os.path.join(root, file)
                 if file.endswith(".py"):
+                    script_path = os.path.join(root, file)
                     print(f"  ➜ Found: {script_path}")  # Debugging output
                     if file not in EXCLUDED_SCRIPTS:
                         python_files.append(script_path)
                     else:
                         print(f"  🚫 Excluded: {script_path}")
-    
+
     print(f"📂 Total Python scripts found: {len(python_files)}")
     return python_files
 
