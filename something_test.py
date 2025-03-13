@@ -6,9 +6,10 @@ sys.stdout.reconfigure(encoding='utf-8')
 sys.stdin.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
-# Set this to your main GitHub working branch directory
+# Define directories to scan
 GITHUB_DIR = os.path.abspath(os.path.expanduser("~/NET-Tools"))  # Adjust if needed
 TEST_DIR = os.path.join(GITHUB_DIR, "test")  # Add test directory explicitly
+RUNNER_DIR = "/home/runner/work/NET-Tools/NET-Tools"  # Explicitly include this directory
 
 # Scripts to exclude
 EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
@@ -19,7 +20,7 @@ def test_find_python_scripts(*directories):
     
     for directory in directories:
         abs_directory = os.path.abspath(directory)
-        print(f"🔍 Searching in: {abs_directory}")  # Debugging line
+        print(f"🔍 Searching in: {abs_directory}")  # Debugging output
         
         if not os.path.isdir(abs_directory):
             print(f"⚠️ Skipping non-existent directory: {abs_directory}")
@@ -48,11 +49,11 @@ def test_check_script_execution(script_path):
         print(f"⚠️ EXCEPTION: {script_path} - {e}")
 
 def main():
-    # Ensure test directory is included in search
-    scripts = test_find_python_scripts(GITHUB_DIR, TEST_DIR)
+    # Ensure all relevant directories are included
+    scripts = test_find_python_scripts(GITHUB_DIR, TEST_DIR, RUNNER_DIR)
 
     if not scripts:
-        print(f"No Python scripts found in {GITHUB_DIR} or {TEST_DIR}.")
+        print(f"No Python scripts found in {GITHUB_DIR}, {TEST_DIR}, or {RUNNER_DIR}.")
         return
 
     print(f"🚀 Running checks on {len(scripts)} scripts...\n")
