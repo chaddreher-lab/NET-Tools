@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import pytest
 
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stdin.reconfigure(encoding="utf-8")
@@ -13,6 +14,16 @@ RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools")  # Ensure
 
 # Scripts to exclude
 EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
+
+@pytest.fixture
+def directory():
+    """Fixture to return the directory to scan."""
+    return os.getcwd()  # Adjust if you want a different base directory for scanning
+
+@pytest.fixture
+def script_path():
+    """Fixture to return the script path for testing execution."""
+    return os.path.join(os.getcwd(), "something_test.py")  # Adjust as needed to point to your script
 
 def test_find_python_scripts(*directories):
     """Recursively finds all Python scripts in the given directories."""
