@@ -6,9 +6,6 @@ import platform
 import socket
 import requests
 
-def test_main():
-main()
-
 def check_python_version():
     print("Checking Python version...")
     version = sys.version_info
