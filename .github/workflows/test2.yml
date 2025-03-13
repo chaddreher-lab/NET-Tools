@@ -44,15 +44,25 @@ jobs:
       - name: Ensure Python Files Are Readable
         run: chmod -R +r .
 
+      - name: Debug Python File Detection
+        run: |
+          echo "Listing all Python files:"
+          find . -name "*.py"
+
       - name: Debug Pytest Collection
-        run: pytest --collect-only
+        run: |
+          export PYTHONPATH=$(pwd)
+          echo "PYTHONPATH set to: $PYTHONPATH"
+          pytest --collect-only --capture=no -o debug=true -o log_cli=true --log-level=DEBUG .
 
       - name: Run Pytest (Testing) on all Python files
         env:
           PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
           DISPLAY: ":99"
+          PYTHONIOENCODING: "utf-8"
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           Xvfb :99 -screen 0 1024x768x16 -nolisten tcp -noreset &
           export DISPLAY=":99"
           sleep 3
-          pytest -v --tb=short --debug
+          pytest -v --tb=short --capture=no .
