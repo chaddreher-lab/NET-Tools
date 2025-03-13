@@ -41,6 +41,7 @@ jobs:
           PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
           DISPLAY: ":99"
         run: |
-          Xvfb :99 -screen 0 1024x768x16 &
+          Xvfb :99 -screen 0 1024x768x16 -nolisten tcp -nolock &
+          export DISPLAY=":99"
           sleep 3
           find . -name "*.py" ! -name "pswdgen.py" -print0 | xargs -0 pytest
