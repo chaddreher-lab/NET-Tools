@@ -80,4 +80,4 @@ jobs:
           Xvfb :99 -screen 0 1024x768x16 -nolisten tcp -noreset &
           export DISPLAY=":99"
           sleep 3
-          pytest -v --tb=short --capture=no ./something_test.py
+          pytest -W ignore::pytest.PytestReturnNotNoneWarning -v --tb=short --capture=no ./something_test.py
