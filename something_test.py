@@ -6,7 +6,7 @@ sys.stdin.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
 # Set this to your main GitHub working branch directory
-GITHUB_DIR = os.path.expanduser("~/NET-tools")  
+GITHUB_DIR = os.path.expanduser("~/")  
 
 # Scripts to exclude
 EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
