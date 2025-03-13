@@ -9,7 +9,7 @@ def check_secret(secret_name):
     else:
         print(f"{secret_name}: ❌ Not found")
 
-def test_main():
+def main():
     print("Checking GitHub Secrets availability...\n")
     
     # List of secrets to check
