@@ -52,16 +52,16 @@ jobs:
       - name: Debug Pytest Collection
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)
-          pytest --collect-only --capture=no --pyargs
+          pytest --collect-only --capture=no -o debug=true -o log_cli=true --log-level=DEBUG --pyargs
 
       - name: Run Pytest (Testing) on all Python files
         env:
           PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
           DISPLAY: ":99"
           PYTHONIOENCODING: "utf-8"
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           Xvfb :99 -screen 0 1024x768x16 -nolisten tcp -noreset &
           export DISPLAY=":99"
           sleep 3
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
-          pytest -v --tb=short --debug --capture=no --pyargs
+          pytest -v --tb=short --debug --capture=no
