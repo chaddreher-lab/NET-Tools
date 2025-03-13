@@ -2,6 +2,8 @@ import requests
 import os
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
+sys.stdin.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
 
 # Load Pastebin API key from environment variables
 PASTEBIN_API_KEY = os.getenv("PASTEBIN_API")
