@@ -37,5 +37,7 @@ jobs:
           find . -name "*.py" -print0 | xargs -0 flake8 --count --max-complexity=10 --max-line-length=88 --statistics || true
 
       - name: Run Pytest (Testing) on all Python files
+        env:
+          PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
         run: |
           find . -name "*.py" -print0 | xargs -0 pytest
