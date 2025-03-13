@@ -9,8 +9,8 @@ sys.stderr.reconfigure(encoding="utf-8")
 
 # Define directories to scan
 GITHUB_DIR = os.path.realpath(os.path.expanduser("~/NET-Tools"))
-TEST_DIR = os.path.join(GITHUB_DIR, "/home/runner/work/NET-Tools/test/")
-RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools/")  # Ensure absolute path
+TEST_DIR = os.path.join(GITHUB_DIR, "test")
+RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools")  # Ensure absolute path
 
 # Scripts to exclude
 EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
@@ -21,18 +21,18 @@ def test_find_python_scripts(*directories):
 
     for directory in directories:
         abs_directory = os.path.realpath(directory)  # Ensure absolute path
-        print(f"🔍 Searching in directory: {abs_directory}")
+        print(f"🔍 Searching in: {abs_directory}")
 
         if not os.path.isdir(abs_directory):
             print(f"❌ ERROR: Directory does not exist: {abs_directory}")
             continue
 
         for root, _, files in os.walk(abs_directory):
-            print(f"📂 Scanning directory: {root}")  # Debugging output
+            print(f"📂 Inside: {root}")  # Debugging output
             for file in files:
                 if file.endswith(".py"):
                     script_path = os.path.join(root, file)
-                    print(f"  ➜ Found Python file: {script_path}")  # Debugging output
+                    print(f"  ➜ Found: {script_path}")  # Debugging output
                     if file not in EXCLUDED_SCRIPTS:
                         python_files.append(script_path)
                     else:
@@ -43,7 +43,7 @@ def test_find_python_scripts(*directories):
 
 def test_check_script_execution(script_path):
     """Attempts to execute a Python script and reports success or failure."""
-    print(f"🚀 Attempting to run: {script_path}")
+    print(f"🚀 Running: {script_path}")
     try:
         result = subprocess.run(
             ["python", script_path], capture_output=True, text=True, timeout=30, encoding="utf-8"
@@ -56,8 +56,17 @@ def test_check_script_execution(script_path):
     except Exception as e:
         print(f"⚠️ EXCEPTION during execution of {script_path} - {e}")
 
+@pytest.fixture
+def directory():
+    """Fixture for the current working directory."""
+    return os.getcwd()
+
+@pytest.fixture
+def script_path(directory):
+    """Fixture for the script path to `something_test.py`."""
+    return os.path.join(directory, "something_test.py")
+
 def main():
-    print("🔍 Starting Python script checks...\n")
     # Ensure all relevant directories are included
     scripts = test_find_python_scripts(GITHUB_DIR, TEST_DIR, RUNNER_DIR)
 
