@@ -10,7 +10,7 @@ sys.stderr.reconfigure(encoding="utf-8")
 # Define directories to scan
 GITHUB_DIR = os.path.realpath(os.path.expanduser("~/NET-Tools"))
 TEST_DIR = os.path.join(GITHUB_DIR, "test")
-RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools")  # Ensure absolute path
+RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools/")  # Ensure absolute path
 
 # Scripts to exclude
 EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
