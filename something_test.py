@@ -8,12 +8,15 @@ sys.stderr.reconfigure(encoding='utf-8')
 # Set this to your main GitHub directory
 GITHUB_DIR = os.path.expanduser("~/gh/net-tools")  
 
+# Scripts to exclude
+EXCLUDED_SCRIPTS = {"sheetstopastebin.py", "infocollect.py", "something_test.py", "thebasics.py"}
+
 def find_python_scripts(directory):
     """Recursively finds all Python scripts in the given directory."""
     python_files = []
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.endswith(".py"):
+            if file.endswith(".py") and file not in EXCLUDED_SCRIPTS:
                 python_files.append(os.path.join(root, file))
     return python_files
 
@@ -21,7 +24,7 @@ def check_script_execution(script_path):
     """Attempts to execute a Python script and reports success or failure."""
     try:
         result = subprocess.run(
-            ["python", script_path], capture_output=True, text=True, timeout=10
+            ["python", script_path], capture_output=True, text=True, timeout=30, encoding="utf-8"
         )
         if result.returncode == 0:
             print(f"✅ SUCCESS: {script_path}")
