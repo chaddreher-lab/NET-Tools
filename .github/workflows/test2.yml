@@ -41,6 +41,11 @@ jobs:
           sudo touch /home/runner/.Xauthority
           sudo chown $(whoami):$(whoami) /home/runner/.Xauthority
 
+      - name: Check collected Python test files
+        run: |
+          echo "Collected test files:"
+          find . -name "test_*.py" -o -name "*_test.py"
+
       - name: Run Pytest (Testing) on all Python files
         env:
           PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
@@ -49,5 +54,4 @@ jobs:
           Xvfb :99 -screen 0 1024x768x16 -nolisten tcp -noreset &
           export DISPLAY=":99"
           sleep 3
-          find . -name "test_*.py" -o -name "*_test.py"
           pytest -v --tb=short --debug
