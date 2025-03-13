@@ -44,6 +44,21 @@ jobs:
       - name: Ensure Python Files Are Readable
         run: chmod -R +r .
 
+      - name: Create conftest.py for missing fixtures
+        run: |
+          cat << 'EOF' > conftest.py
+          import os
+          import pytest
+
+          @pytest.fixture
+          def directory():
+              return os.getcwd()
+
+          @pytest.fixture
+          def script_path():
+              return os.path.join(os.getcwd(), "something_test.py")
+          EOF
+
       - name: Debug Python File Detection
         run: |
           echo "Listing all Python files:"
@@ -51,16 +66,18 @@ jobs:
 
       - name: Debug Pytest Collection
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
-          pytest --collect-only --capture=no --pyargs
+          export PYTHONPATH=$(pwd)
+          echo "PYTHONPATH set to: $PYTHONPATH"
+          pytest --collect-only --capture=no -o debug=true -o log_cli=true --log-level=DEBUG .
 
-      - name: Run Pytest (Testing) on all Python files
+      - name: Run Pytest (Testing) on something_test.py
         env:
           PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
           DISPLAY: ":99"
+          PYTHONIOENCODING: "utf-8"
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           Xvfb :99 -screen 0 1024x768x16 -nolisten tcp -noreset &
           export DISPLAY=":99"
           sleep 3
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
-          pytest -v --tb=short --debug --capture=no --pyargs
+          pytest -W ignore::pytest.PytestReturnNotNoneWarning -v --tb=short --capture=no ./something_test.py
