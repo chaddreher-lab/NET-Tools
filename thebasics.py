@@ -2,6 +2,8 @@ import psutil
 import socket
 import requests
 import os
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
 def check_system_resources():
     """Check system CPU, Memory, and Disk Usage."""

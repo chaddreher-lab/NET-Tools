@@ -1,5 +1,7 @@
 import os
 import subprocess
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
 # Set this to your main GitHub directory
 GITHUB_DIR = os.path.expanduser("~/gh/net-tools")  

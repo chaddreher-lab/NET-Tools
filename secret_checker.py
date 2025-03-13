@@ -1,4 +1,6 @@
 import os
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
 def check_secret(secret_name):
     secret_value = os.getenv(secret_name)
