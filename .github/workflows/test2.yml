@@ -44,7 +44,7 @@ jobs:
       - name: Check collected Python test files
         run: |
           echo "Collected test files:"
-          find . -name "test_*.py" -o -name "*_test.py"
+          find . -name "*.py" 
 
       - name: Run Pytest (Testing) on all Python files
         env:
