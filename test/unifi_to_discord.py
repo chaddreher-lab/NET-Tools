@@ -51,6 +51,9 @@ def get_cameras(cookies):
         if isinstance(cameras, list):  # Ensure it's a list
             return {"data": cameras}  # Wrap it in a dictionary to match expected format
         return cameras  # If it's already a dict, return as is
+    elif response.status_code == 401:
+        print("⚠️ Authentication expired. Re-authenticating...")
+        return None  # Indicate re-authentication is needed
     else:
         print(f"❌ Failed to retrieve camera list: {response.status_code}")
         return {"data": []}  # Return a consistent structure
@@ -77,6 +80,12 @@ def monitor_unifi_cameras():
     
     while True:
         cameras = get_cameras(cookies)
+        if cameras is None:  # Re-authenticate if needed
+            cookies = get_unifi_auth()
+            if not cookies:
+                return
+            cameras = get_cameras(cookies)
+        
         for camera in cameras.get("data", []):
             motion_detected = camera.get("lastMotion")
             camera_name = camera.get("name", "Unknown Camera")
