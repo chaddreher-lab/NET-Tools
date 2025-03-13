@@ -46,7 +46,8 @@ jobs:
           PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
           DISPLAY: ":99"
         run: |
-          Xvfb :99 -screen 0 1024x768x16 -nolisten tcp -nolock &
+          Xvfb :99 -screen 0 1024x768x16 -nolisten tcp &
           export DISPLAY=":99"
           sleep 3
-          find . -name "*.py" ! -name "pswdgen.py" -print0 | xargs -0 pytest
+          pytest --fixtures || true  # List available fixtures for debugging
+          find . -name "*.py" ! -name "pswdgen.py" -print0 | xargs -0 pytest -v --tb=short
