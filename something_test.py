@@ -9,7 +9,7 @@ sys.stderr.reconfigure(encoding="utf-8")
 
 # Define directories to scan
 GITHUB_DIR = os.path.realpath(os.path.expanduser("~/NET-Tools"))
-TEST_DIR = os.path.join(GITHUB_DIR, "test")
+TEST_DIR = os.path.join(GITHUB_DIR, "/home/runner/work/NET-Tools/test/")
 RUNNER_DIR = os.path.realpath("/home/runner/work/NET-Tools/NET-Tools/")  # Ensure absolute path
 
 # Scripts to exclude
