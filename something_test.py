@@ -71,11 +71,19 @@ def script_path(directory):
     return os.path.join(directory, "something_test.py")
 
 def main():
+    # Only scan directories that exist
+    valid_dirs = [GITHUB_DIR, TEST_DIR, RUNNER_DIR]
+    valid_dirs = [d for d in valid_dirs if os.path.isdir(d)]  # Remove any non-existing directories
+
+    if not valid_dirs:
+        print("❌ No valid directories to search for Python scripts.")
+        return
+
     # Ensure all relevant directories are included
-    scripts = test_find_python_scripts(GITHUB_DIR, TEST_DIR, RUNNER_DIR)
+    scripts = test_find_python_scripts(*valid_dirs)
 
     if not scripts:
-        print(f"❌ No Python scripts found in {GITHUB_DIR}, {TEST_DIR}, or {RUNNER_DIR}.")
+        print(f"❌ No Python scripts found in {', '.join(valid_dirs)}.")
         return
 
     print(f"🚀 Running checks on {len(scripts)} scripts...\n")
