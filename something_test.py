@@ -44,6 +44,10 @@ def test_find_python_scripts(*directories):
 def test_check_script_execution(script_path):
     """Attempts to execute a Python script and reports success or failure."""
     print(f"🚀 Running: {script_path}")
+    if not os.path.exists(script_path):
+        print(f"❌ ERROR: Script does not exist: {script_path}")
+        return
+
     try:
         result = subprocess.run(
             ["python", script_path], capture_output=True, text=True, timeout=30, encoding="utf-8"
