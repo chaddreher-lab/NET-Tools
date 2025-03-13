@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest requests psutil pypdf pyautogui xvfbwrapper PyPDF2
+          pip install flake8 pytest requests psutil pypdf pyautogui xvfbwrapper
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run Flake8 (Linting) on all Python files
@@ -41,6 +41,12 @@ jobs:
           sudo touch /home/runner/.Xauthority
           sudo chown $(whoami):$(whoami) /home/runner/.Xauthority
 
+      - name: Ensure Python Files Are Readable
+        run: chmod -R +r .
+
+      - name: Debug Pytest Collection
+        run: pytest --collect-only
+
       - name: Run Pytest (Testing) on all Python files
         env:
           PASTEBIN_API: ${{ secrets.PASTEBIN_API }}
@@ -49,5 +55,4 @@ jobs:
           Xvfb :99 -screen 0 1024x768x16 -nolisten tcp -noreset &
           export DISPLAY=":99"
           sleep 3
-          pytest --fixtures || true  # List available fixtures for debugging
-          find . -name "*.py" ! -name "pswdgen.py" -print0 | xargs -0 pytest -v --tb=short
+          pytest -v --tb=short --debug
