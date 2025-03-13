@@ -1,7 +1,15 @@
 import requests
+import os
 
-# Pastebin API key (Get it from https://pastebin.com/api)
-PASTEBIN_API_KEY = "YOUR_PASTEBIN_API_KEY"
+# Load Pastebin API key from environment variables
+PASTEBIN_API_KEY = os.getenv("PASTEBIN_API")
+
+# Debugging: Check if the API key is loaded
+if PASTEBIN_API_KEY is None:
+    print("❌ ERROR: PASTEBIN_API environment variable not found!")
+    exit(1)  # Exit script if API key is missing
+else:
+    print(f"✅ Loaded API Key: {PASTEBIN_API_KEY[:5]}********")  # Masked for security
 
 # Convert Google Sheet link to CSV format
 def get_csv_url(sheet_url):
