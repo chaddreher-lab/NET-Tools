@@ -8,7 +8,7 @@ Welcome to **NET-Tools**, a collection of Python scripts designed to make networ
 | ---------------------- | -------------------------------------------------- |
 | `File_org.py`          | Organizes files efficiently. 📂                    |
 | `host_secret_check.py` | Checks for exposed secrets on a host. 🔍🔑         |
-| `imgurtodiscord.py`    | Uploads images from Imgur to Discord. 🖼️➡️🎮      |
+| `imgurtodiscord.py`    | Uploads images from Imgur to Discord. via self inserted webhook url 🖼️➡️🎮      |
 | `info_collect.py`      | Collects various system/network information. 🏗️📊 |
 | `secret_checker.py`    | Scans for sensitive information in files. 🚨🔎     |
 | `sheetstopastebin.py`  | Converts Google Sheets data to Pastebin. 📄➡️📜    |
