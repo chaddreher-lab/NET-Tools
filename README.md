@@ -1,4 +1,4 @@
-readme_content = """# NET-Tools 🚀
+# NET-Tools 🚀
 
 Welcome to **NET-Tools**, a collection of Python scripts designed to make networking and security tasks easier! Whether you're monitoring websites, checking secrets, or automating tasks, these tools have got you covered. 🔧💻
 
