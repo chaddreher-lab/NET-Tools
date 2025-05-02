@@ -1,29 +1,40 @@
 import requests
 
-def post_to_discord_webhook(imgur_url, webhook_url):
-    # Prepare the JSON payload for Discord
-    data = {
-        "content": "Here is an image from Imgur:",  # Optional message
-        "embeds": [
-            {
+def post_images_to_discord_webhook(imgur_urls, webhook_url):
+    embeds = []
+    for url in imgur_urls:
+        if url:  # Skip empty inputs
+            embeds.append({
                 "image": {
-                    "url": imgur_url  # The Imgur image URL to embed in Discord
+                    "url": url
                 }
-            }
-        ]
+            })
+
+    if not embeds:
+        print("No valid Imgur URLs provided.")
+        return
+
+    data = {
+        "content": "Here are the images from Imgur:",
+        "embeds": embeds
     }
 
-    # Send a POST request to the Discord webhook
     response = requests.post(webhook_url, json=data)
 
-    # Check if the request was successful
     if response.status_code == 204:
-        print("Image successfully posted to Discord!")
+        print("Images successfully posted to Discord!")
     else:
-        print(f"Failed to post image to Discord. Status code: {response.status_code}, Error: {response.text}")
+        print(f"Failed to post images. Status code: {response.status_code}, Error: {response.text}")
 
-# Usage example:
-imgur_url = "https://i.imgur.com/yourimage.png"  # Replace with the Imgur link
-webhook_url = "https://discord.com/api/webhooks/your_webhook_url"  # Replace with your Discord webhook URL
+if __name__ == "__main__":
+    webhook_url = input("Enter the Discord webhook URL: ").strip()
 
-post_to_discord_webhook(imgur_url, webhook_url)
+    print("Enter Imgur image URLs (one per line). Press Enter on a blank line to finish.")
+    imgur_urls = []
+    while True:
+        url = input("Imgur URL: ").strip()
+        if not url:
+            break
+        imgur_urls.append(url)
+
+    post_images_to_discord_webhook(imgur_urls, webhook_url)
