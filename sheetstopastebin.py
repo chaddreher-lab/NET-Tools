@@ -1,9 +1,15 @@
 import requests
 import os
 import sys
+from dotenv import load_dotenv  # ✅ NEW
+
+# Ensure UTF-8 encoding for I/O
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stdin.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
+
+# ✅ Load environment variables from .env file
+load_dotenv()
 
 # Load Pastebin API key from environment variables
 PASTEBIN_API_KEY = os.getenv("PASTEBIN_API")
@@ -11,16 +17,16 @@ PASTEBIN_API_KEY = os.getenv("PASTEBIN_API")
 # Debugging: Check if the API key is loaded
 if PASTEBIN_API_KEY is None:
     print("❌ ERROR: PASTEBIN_API environment variable not found!")
-    exit(1)  # Exit script if API key is missing
+    exit(1)
 else:
-    print(f"✅ Loaded API Key: {PASTEBIN_API_KEY[:5]}********")  # Masked for security
+    print(f"✅ Loaded API Key: {PASTEBIN_API_KEY[:5]}********")
 
 # Convert Google Sheet link to CSV format
 def get_csv_url(sheet_url):
     if "edit" in sheet_url:
         sheet_id = sheet_url.split("/d/")[1].split("/")[0]
         return f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
-    return sheet_url  # Assume it's already a direct CSV link
+    return sheet_url
 
 # Fetch data from Google Sheets
 def fetch_google_sheet_data(sheet_url):
@@ -28,7 +34,7 @@ def fetch_google_sheet_data(sheet_url):
     response = requests.get(csv_url)
     
     if response.status_code == 200:
-        return response.text  # Raw CSV data
+        return response.text
     else:
         print("Error fetching Google Sheet data:", response.status_code)
         return None
@@ -40,15 +46,15 @@ def post_to_pastebin(data):
         "api_dev_key": PASTEBIN_API_KEY,
         "api_option": "paste",
         "api_paste_code": data,
-        "api_paste_private": "1",  # 0 = public, 1 = unlisted, 2 = private
-        "api_paste_format": "text",  # FIX: Use "text" instead of "csv"
+        "api_paste_private": "1",
+        "api_paste_format": "text",
         "api_paste_name": "Google Sheet Data",
     }
 
     response = requests.post(url, data=payload)
     
     if response.status_code == 200 and "pastebin.com" in response.text:
-        return response.text  # URL of the Pastebin post
+        return response.text
     else:
         print("Error posting to Pastebin:", response.text)
         return None
@@ -61,6 +67,6 @@ if __name__ == "__main__":
     if data:
         paste_url = post_to_pastebin(data)
         if paste_url:
-            print("Data posted successfully:", paste_url)
+            print("✅ Data posted successfully:", paste_url)
         else:
-            print("Failed to post data.")
+            print("❌ Failed to post data.")
